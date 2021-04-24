@@ -4,6 +4,7 @@ import com.example.todo.entity.member.Member;
 import com.example.todo.entity.member.dto.MemberDTO;
 import com.example.todo.entity.member.dto.MemberJoinRequest;
 import com.example.todo.entity.member.dto.MemberJoinResponse;
+import com.example.todo.entity.member.dto.MemberUpdateRequest;
 import com.example.todo.service.MemberService;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,11 @@ public class MemberController {
     public ResponseEntity<MemberDTO> detailsMember(@PathVariable Long memberNo) throws NotFoundException {
         Member findMember = memberService.detalisMember(memberNo);
         return ResponseEntity.ok(new MemberDTO(findMember));
+    }
+
+    @PatchMapping("member/{memberNo}")
+    public ResponseEntity<MemberDTO> updateMember(@PathVariable Long memberNo, @RequestBody MemberUpdateRequest memberUpdateRequest) throws NotFoundException {
+        Member updateMember = memberService.updateMember(memberNo, memberUpdateRequest);
+        return ResponseEntity.ok(new MemberDTO(updateMember));
     }
 }

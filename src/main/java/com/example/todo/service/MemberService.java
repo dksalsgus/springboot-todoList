@@ -2,6 +2,7 @@ package com.example.todo.service;
 
 import com.example.todo.entity.member.Member;
 import com.example.todo.entity.member.dto.MemberJoinRequest;
+import com.example.todo.entity.member.dto.MemberUpdateRequest;
 import com.example.todo.repository.MemberRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,12 @@ public class MemberService {
     public Member detalisMember(Long memberNo) throws NotFoundException {
         return memberRepository.findById(memberNo).orElseThrow(() -> new NotFoundException("Not Found Member"));
     }
+
+    @Transactional(readOnly = true)
+    public Member updateMember(Long memberNo, MemberUpdateRequest memberUpdateRequest) throws NotFoundException {
+        Member findMember = memberRepository.findById(memberNo).orElseThrow(() -> new NotFoundException("Not Found Member"));
+        return findMember.update(memberUpdateRequest.getMemberPw(), memberUpdateRequest.getMemberName(), memberUpdateRequest.getMemberGender(), memberUpdateRequest.getMemberEmail());
+    }
+
 
 }
