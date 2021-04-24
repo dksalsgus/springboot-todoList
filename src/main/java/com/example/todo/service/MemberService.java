@@ -35,10 +35,16 @@ public class MemberService {
         return memberRepository.findById(memberNo).orElseThrow(() -> new NotFoundException("Not Found Member"));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Member updateMember(Long memberNo, MemberUpdateRequest memberUpdateRequest) throws NotFoundException {
         Member findMember = memberRepository.findById(memberNo).orElseThrow(() -> new NotFoundException("Not Found Member"));
-        return findMember.update(memberUpdateRequest.getMemberPw(), memberUpdateRequest.getMemberName(), memberUpdateRequest.getMemberGender(), memberUpdateRequest.getMemberEmail());
+        findMember.update(memberUpdateRequest.getMemberPw(), memberUpdateRequest.getMemberName(), memberUpdateRequest.getMemberGender(), memberUpdateRequest.getMemberEmail());
+        return memberRepository.save(findMember);
+    }
+
+    @Transactional
+    public void deleteMember(Long memberNo) {
+        memberRepository.deleteById(memberNo);
     }
 
 
