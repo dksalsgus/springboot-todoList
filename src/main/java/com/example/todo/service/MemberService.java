@@ -3,6 +3,7 @@ package com.example.todo.service;
 import com.example.todo.entity.member.Member;
 import com.example.todo.entity.member.dto.MemberJoinRequest;
 import com.example.todo.repository.MemberRepository;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,11 @@ public class MemberService {
                         memberJoinRequest.getMemberGender(),
                         memberJoinRequest.getMemberEmail()
                 ));
+    }
+
+    @Transactional(readOnly = true)
+    public Member detalisMember(Long memberNo) throws NotFoundException {
+        return memberRepository.findById(memberNo).orElseThrow(() -> new NotFoundException("Not Found Member"));
     }
 
 }

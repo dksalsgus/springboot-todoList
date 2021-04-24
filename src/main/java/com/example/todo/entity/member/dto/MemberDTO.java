@@ -15,8 +15,8 @@ public class MemberDTO {
     @ApiModelProperty(value = "아이디")
     private String memberId;
 
-    @ApiModelProperty(value = "비밀번호")
-    private String memberPw;
+//    @ApiModelProperty(value = "비밀번호")
+//    private String memberPw;
 
     @ApiModelProperty(value = "이름")
     private String memberName;
