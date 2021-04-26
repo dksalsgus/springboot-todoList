@@ -32,4 +32,10 @@ public class Profile {
         this.profilePicture = profilePicture;
         this.profileNickname = profileNickname;
     }
+
+    public Profile update(String profilePicture, String profileNickname) {
+        this.profilePicture = profilePicture;
+        this.profileNickname = profileNickname;
+        return this;
+    }
 }
