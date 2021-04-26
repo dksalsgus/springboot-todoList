@@ -18,7 +18,7 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Member saveMember(MemberJoinRequest memberJoinRequest) {
         return memberRepository.save(
                 new Member(

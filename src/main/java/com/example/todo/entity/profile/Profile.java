@@ -27,4 +27,9 @@ public class Profile {
 
     private String profileNickname;
 
+    public Profile(Member member, String profilePicture, String profileNickname) {
+        this.member = member;
+        this.profilePicture = profilePicture;
+        this.profileNickname = profileNickname;
+    }
 }
