@@ -4,6 +4,7 @@ import com.example.todo.entity.member.Member;
 import com.example.todo.entity.todo.Todo;
 import com.example.todo.entity.todo.dto.TodoCreateRequest;
 import com.example.todo.entity.todo.dto.TodoDTO;
+import com.example.todo.entity.todo.dto.TodoUpdateRequest;
 import com.example.todo.service.TodoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,15 @@ public class TodoController {
 
     @ApiOperation(value = "Todo Update")
     @PatchMapping("/todo/{todoNo}")
-    public void updateTodo(@PathVariable Long todoNo) {
+    public ResponseEntity<TodoDTO> updateTodo(@PathVariable Long todoNo, @RequestBody TodoUpdateRequest todoUpdateRequest) throws NotFoundException {
+        Todo updateTodo = todoService.updateTodo(todoNo, todoUpdateRequest);
+        return ResponseEntity.ok(new TodoDTO(updateTodo));
+    }
 
+    @ApiOperation(value = "Todo Delete")
+    @DeleteMapping("/todo/{todoNo}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long todoNo) throws NotFoundException {
+        todoService.deleteTodo(todoNo);
+        return ResponseEntity.noContent().build();
     }
 }

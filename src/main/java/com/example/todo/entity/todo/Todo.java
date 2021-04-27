@@ -40,4 +40,12 @@ public class Todo extends BaseTimeEntity {
         this.todoTitle = todoTitle;
         this.todoContent = todoContent;
     }
+
+
+    public Todo update(String todoKind, String todoTitle, String todoContent) {
+        this.todoKind = todoKind;
+        this.todoTitle = todoTitle;
+        this.todoContent = todoContent;
+        return this;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.todo.service;
 import com.example.todo.entity.member.Member;
 import com.example.todo.entity.todo.Todo;
 import com.example.todo.entity.todo.dto.TodoCreateRequest;
+import com.example.todo.entity.todo.dto.TodoUpdateRequest;
 import com.example.todo.repository.TodoRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +40,15 @@ public class TodoService {
     }
 
     @Transactional
-    public void updateTodo() {
+    public Todo updateTodo(Long todoNo, TodoUpdateRequest todoUpdateRequest) throws NotFoundException {
+        return todoRepository.findById(todoNo)
+                .map(t -> t.update(todoUpdateRequest.getTodoKind(), todoUpdateRequest.getTodoTitle(), todoUpdateRequest.getTodoContent()))
+                .orElseThrow(() -> new NotFoundException("Not found Todo"));
     }
 
     @Transactional
-    public void deleteTodo() {
+    public void deleteTodo(Long todoNo) {
+        todoRepository.deleteById(todoNo);
     }
 
 }
