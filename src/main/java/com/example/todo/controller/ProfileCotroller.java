@@ -1,5 +1,6 @@
 package com.example.todo.controller;
 
+import com.example.todo.config.principal.UserPrincipal;
 import com.example.todo.entity.profile.Profile;
 import com.example.todo.entity.profile.dto.ProfileCreateRequest;
 import com.example.todo.entity.profile.dto.ProfileDTO;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,9 +24,9 @@ public class ProfileCotroller {
 
     @PostMapping("/profile")
     @ApiOperation(value = "프로필 생성")
-    public ResponseEntity<ProfileDTO> saveProfile(@RequestBody ProfileCreateRequest profileCreateRequest, @RequestParam("profilePicture") MultipartFile multipartFile) throws NotFoundException {
+    public ResponseEntity<ProfileDTO> saveProfile(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody ProfileCreateRequest profileCreateRequest, @RequestParam("profilePicture") MultipartFile multipartFile) throws NotFoundException {
         profileCreateRequest.setProfilePicture(multipartFile.getOriginalFilename());
-        Profile saveProfile = profileService.saveProfile(profileCreateRequest);
+        Profile saveProfile = profileService.saveProfile(userPrincipal.getUsername(),profileCreateRequest);
         return ResponseEntity.ok(new ProfileDTO(saveProfile));
     }
 

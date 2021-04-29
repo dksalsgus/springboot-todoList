@@ -1,5 +1,6 @@
 package com.example.todo.controller;
 
+import com.example.todo.config.principal.UserPrincipal;
 import com.example.todo.entity.member.Member;
 import com.example.todo.entity.todo.Todo;
 import com.example.todo.entity.todo.dto.TodoCreateRequest;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class TodoController {
 
     @ApiOperation(value = "Todo 생성")
     @PostMapping("/todo")
-    public ResponseEntity<TodoDTO> createTodo(@RequestBody TodoCreateRequest todoCreateRequest) {
-        Todo savedTodo = todoService.saveTodo(todoCreateRequest);
+    public ResponseEntity<TodoDTO> createTodo(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody TodoCreateRequest todoCreateRequest) throws NotFoundException {
+        Todo savedTodo = todoService.saveTodo(userPrincipal.getUsername(), todoCreateRequest);
         return ResponseEntity.ok(new TodoDTO(savedTodo));
     }
 
