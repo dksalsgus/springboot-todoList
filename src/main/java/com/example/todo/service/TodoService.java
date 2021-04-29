@@ -4,6 +4,7 @@ import com.example.todo.entity.member.Member;
 import com.example.todo.entity.todo.Todo;
 import com.example.todo.entity.todo.dto.TodoCreateRequest;
 import com.example.todo.entity.todo.dto.TodoUpdateRequest;
+import com.example.todo.repository.MemberRepository;
 import com.example.todo.repository.TodoRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,14 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
+    private final MemberRepository memberRepository;
+
     @Transactional
-    public Todo saveTodo(TodoCreateRequest todoCreateRequest) {
+    public Todo saveTodo(String memberId, TodoCreateRequest todoCreateRequest) throws NotFoundException {
+        Member findMember = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("Not Found Member"));
         return todoRepository
                 .save(new Todo(
-                        todoCreateRequest.getMember(),
+                        findMember,
                         todoCreateRequest.getTodoKind(),
                         todoCreateRequest.getTodoTitle(),
                         todoCreateRequest.getTodoContent()
