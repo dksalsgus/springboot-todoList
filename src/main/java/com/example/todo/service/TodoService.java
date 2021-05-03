@@ -34,8 +34,10 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public List<Todo> listTodo(Member member) throws NotFoundException {
-        return todoRepository.findAllByMember(member).orElseThrow(() -> new NotFoundException("Not Found TodoList"));
+    public List<Todo> listTodo(String memberId) throws NotFoundException {
+        Member findMember = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found"));
+        return todoRepository.findAllByMember(findMember).orElseThrow(() -> new NotFoundException("Not Found TodoList"));
     }
 
     @Transactional(readOnly = true)

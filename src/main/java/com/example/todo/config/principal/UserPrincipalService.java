@@ -1,5 +1,6 @@
 package com.example.todo.config.principal;
 
+import com.example.todo.entity.member.Member;
 import com.example.todo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +16,11 @@ public class UserPrincipalService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        return memberRepository.findByMemberId(memberId)
-                .map(member -> new UserPrincipal(member))
+        Member findMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found Member"));
+        if (findMember == null) {
+            throw new UsernameNotFoundException("Not found");
+        }
+        return new UserPrincipal(findMember);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.todo.config.jwt;
 
-import com.example.todo.entity.member.Member;
-import com.example.todo.repository.MemberRepository;
+import com.example.todo.config.principal.UserPrincipalService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,8 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final MemberRepository memberRepository;
+    private final UserPrincipalService userPrincipalService;
+
     private String secretKey = "asfdasfdsafsfsa";
     // 토큰 유효시간 30분
     private long tokenValidTime = 30 * 60 * 1000L;
@@ -46,8 +46,7 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증정보 조회
     public Authentication getAuthentication(String token) {
-        Member findMember = memberRepository.findByMemberId(this.getUserPk(token))
-                .orElseThrow(() -> new UsernameNotFoundException("Not found"));
+        UserDetails findMember = userPrincipalService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(findMember, "", null);
     }
 
@@ -56,9 +55,9 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token).getBody().getSubject();
     }
 
-    // Request의 Header에서 token갑승ㄹ 가져온다 "X-AUTH-TOKEN:"TOKEN값"
+    // Request의 Header에서 token값을 가져온다 "X-AUTH-TOKEN":"TOKEN값"
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN"); // Header의 X-AUTH-TOKEN 값 가져온다
+        return request.getHeader("x-auth-token"); // Header의 X-AUTH-TOKEN 값 가져온다
     }
 
     // 토큰의 유효성 및 만료일자 확인

@@ -1,7 +1,6 @@
 package com.example.todo.controller;
 
 import com.example.todo.config.principal.UserPrincipal;
-import com.example.todo.entity.member.Member;
 import com.example.todo.entity.todo.Todo;
 import com.example.todo.entity.todo.dto.TodoCreateRequest;
 import com.example.todo.entity.todo.dto.TodoDTO;
@@ -32,9 +31,9 @@ public class TodoController {
     }
 
     @ApiOperation(value = "Todo List")
-    @GetMapping("/todos")
-    public ResponseEntity<List<Todo>> listTodo(Member member) throws NotFoundException {
-        List<Todo> todoList = todoService.listTodo(member);
+    @GetMapping("/{memberId}/todos")
+    public ResponseEntity<List<Todo>> listTodo(@PathVariable String memberId) throws NotFoundException {
+        List<Todo> todoList = todoService.listTodo(memberId);
         return ResponseEntity.ok(todoList);
     }
 
