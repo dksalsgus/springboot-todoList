@@ -1,6 +1,5 @@
 package com.example.todo.config;
 
-import com.example.todo.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
 
         http.formLogin()
-                .usernameParameter("userId")
-                .usernameParameter("userPw")
+                .usernameParameter("memberId")
+                .usernameParameter("memberPw")
                 .loginProcessingUrl("/login");
 
         http.logout()
