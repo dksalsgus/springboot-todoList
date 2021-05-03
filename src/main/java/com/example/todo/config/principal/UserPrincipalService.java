@@ -16,6 +16,7 @@ public class UserPrincipalService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
         return memberRepository.findByMemberId(memberId)
+                .map(member -> new UserPrincipal(member))
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found Member"));
     }
 }
