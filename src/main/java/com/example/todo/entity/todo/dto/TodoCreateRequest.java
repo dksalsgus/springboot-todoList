@@ -13,9 +13,6 @@ import lombok.ToString;
 @ApiModel(value = "Todo 생성 요청")
 public class TodoCreateRequest {
 
-//    @ApiModelProperty(value = "회원")
-//    private Member member;
-
     @ApiModelProperty(value = "종류")
     private String todoKind;
 
