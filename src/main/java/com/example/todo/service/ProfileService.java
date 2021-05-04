@@ -66,7 +66,14 @@ public class ProfileService {
     }
 
     @Transactional
-    public void deleteProfile(Long profileNo) {
+    public void deleteProfile(Long profileNo) throws NotFoundException {
+        Profile findProfile = profileRepository.findById(profileNo)
+                .orElseThrow(() -> new NotFoundException("Not Found Profile"));
+
+        String deleteFileName = findProfile.getMember().getMemberId() + "_" + findProfile.getProfilePicture();
+        String deleteFilePath = System.getProperty("user.dir") + "\\profilePicture\\" + deleteFileName;
+        File deleteFile = new File(deleteFilePath);
+        deleteFile.delete();
         profileRepository.deleteById(profileNo);
     }
 

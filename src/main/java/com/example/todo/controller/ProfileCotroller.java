@@ -56,7 +56,7 @@ public class ProfileCotroller {
 
     @DeleteMapping("/profile/{profileNo}")
     @ApiOperation(value = "프로필 삭제")
-    public ResponseEntity<Void> deleteProfile(@PathVariable Long profileNo) {
+    public ResponseEntity<Void> deleteProfile(@PathVariable Long profileNo) throws NotFoundException {
         profileService.deleteProfile(profileNo);
         return ResponseEntity.noContent().build();
     }
