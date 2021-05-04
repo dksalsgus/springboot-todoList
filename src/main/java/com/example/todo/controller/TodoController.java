@@ -31,9 +31,9 @@ public class TodoController {
     }
 
     @ApiOperation(value = "Todo List")
-    @GetMapping("/{memberId}/todos")
-    public ResponseEntity<List<Todo>> listTodo(@PathVariable String memberId) throws NotFoundException {
-        List<Todo> todoList = todoService.listTodo(memberId);
+    @GetMapping("/todos")
+    public ResponseEntity<List<Todo>> listTodo(@AuthenticationPrincipal UserPrincipal userPrincipal) throws NotFoundException {
+        List<Todo> todoList = todoService.listTodo(userPrincipal.getUsername());
         return ResponseEntity.ok(todoList);
     }
 

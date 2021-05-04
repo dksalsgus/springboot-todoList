@@ -23,7 +23,8 @@ public class TodoService {
 
     @Transactional
     public Todo saveTodo(String memberId, TodoCreateRequest todoCreateRequest) throws NotFoundException {
-        Member findMember = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NotFoundException("Not Found Member"));
+        Member findMember = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found Member"));
         return todoRepository
                 .save(new Todo(
                         findMember,
