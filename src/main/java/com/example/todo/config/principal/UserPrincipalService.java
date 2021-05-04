@@ -18,9 +18,6 @@ public class UserPrincipalService implements UserDetailsService {
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
         Member findMember = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found Member"));
-        if (findMember == null) {
-            throw new UsernameNotFoundException("Not found");
-        }
         return new UserPrincipal(findMember);
     }
 }

@@ -2,19 +2,17 @@ package com.example.todo.config.principal;
 
 
 import com.example.todo.entity.member.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
 
-    private Member member;
-
-    public UserPrincipal(Member member) {
-        this.member = member;
-    }
+    private final Member member;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

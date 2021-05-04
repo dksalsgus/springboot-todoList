@@ -1,6 +1,8 @@
 package com.example.todo.config.jwt;
 
+import com.example.todo.config.principal.UserPrincipal;
 import com.example.todo.config.principal.UserPrincipalService;
+import com.example.todo.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -8,7 +10,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
+    private final MemberRepository memberRepository;
     private final UserPrincipalService userPrincipalService;
 
     private String secretKey = "asfdasfdsafsfsa";
@@ -46,7 +48,7 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails findMember = userPrincipalService.loadUserByUsername(this.getUserPk(token));
+        UserPrincipal findMember = (UserPrincipal) userPrincipalService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(findMember, "", null);
     }
 
