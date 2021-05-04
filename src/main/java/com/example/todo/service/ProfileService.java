@@ -31,8 +31,11 @@ public class ProfileService {
     }
 
     @Transactional(readOnly = true)
-    public Profile detailsProfile(Long profileNo) throws NotFoundException {
-        return profileRepository.findById(profileNo).orElseThrow(() -> new NotFoundException("Not Found Profile"));
+    public Profile detailsProfile(String memberId) throws NotFoundException {
+        Member findMember = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundException("Not Found Member"));
+        return profileRepository.findByMember(findMember)
+                .orElseThrow(() -> new NotFoundException("Not Found Profile"));
     }
 
     @Transactional

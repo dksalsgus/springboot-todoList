@@ -30,10 +30,10 @@ public class ProfileCotroller {
         return ResponseEntity.ok(new ProfileDTO(saveProfile));
     }
 
-    @GetMapping("/profile/{profileNo}")
+    @GetMapping("/profile")
     @ApiOperation(value = "프로필 조회")
-    public ResponseEntity<ProfileDTO> detailsProfile(@PathVariable Long profileNo) throws NotFoundException {
-        Profile findProfile = profileService.detailsProfile(profileNo);
+    public ResponseEntity<ProfileDTO> detailsProfile(@AuthenticationPrincipal UserPrincipal userPrincipal) throws NotFoundException {
+        Profile findProfile = profileService.detailsProfile(userPrincipal.getUsername());
         return ResponseEntity.ok(new ProfileDTO(findProfile));
     }
 
