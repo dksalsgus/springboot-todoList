@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .usernameParameter("memberId")
                 .passwordParameter("memberPw")
-                .loginProcessingUrl("/login");
+                .loginProcessingUrl("/loginPost");
     }
 
     @Override
