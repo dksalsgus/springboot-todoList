@@ -2,6 +2,7 @@ package com.example.todo.service;
 
 import com.example.todo.entity.member.Member;
 import com.example.todo.entity.member.dto.MemberJoinRequest;
+import com.example.todo.entity.member.dto.MemberLoginRequest;
 import com.example.todo.entity.member.dto.MemberUpdateRequest;
 import com.example.todo.repository.MemberRepository;
 import javassist.NotFoundException;
@@ -50,12 +51,12 @@ public class MemberService {
     }
 
 
-    public Member login(Member member) {
-        Optional<Member> findMember = memberRepository.findByMemberId(member.getMemberId());
+    public Member login(MemberLoginRequest memberLoginRequest) {
+        Optional<Member> findMember = memberRepository.findByMemberId(memberLoginRequest.getMemberId());
         if (findMember.isPresent()) {
             Member getMember = findMember.get();
-            boolean isPwMatch = passwordEncoder.matches(member.getMemberPw(), getMember.getMemberPw());
-            if (!isPwMatch) {
+            boolean isPwMatch = passwordEncoder.matches(memberLoginRequest.getMemberPw(), getMember.getMemberPw());
+            if (isPwMatch) {
                 return getMember;
             }
             return null;
