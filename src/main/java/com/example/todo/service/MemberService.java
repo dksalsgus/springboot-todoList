@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -47,5 +49,18 @@ public class MemberService {
         memberRepository.deleteById(memberNo);
     }
 
+
+    public Member login(Member member) {
+        Optional<Member> findMember = memberRepository.findByMemberId(member.getMemberId());
+        if (findMember.isPresent()) {
+            Member getMember = findMember.get();
+            boolean isPwMatch = passwordEncoder.matches(member.getMemberPw(), getMember.getMemberPw());
+            if (!isPwMatch) {
+                return getMember;
+            }
+            return null;
+        }
+        return null;
+    }
 
 }
