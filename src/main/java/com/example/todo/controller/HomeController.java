@@ -41,8 +41,7 @@ public class HomeController {
     public ResponseEntity<MemberLoginResponse> login(@RequestBody MemberLoginRequest memberLoginRequest) throws NotFoundException {
         Member loginMember = memberService.login(memberLoginRequest);
         MemberLoginResponse memberLoginResponse = new MemberLoginResponse(loginMember, jwtTokenProvider.createToken(loginMember.getMemberId()));
-        return ResponseEntity
-                .ok().header("x-auth-token", memberLoginResponse.getToken()).body(memberLoginResponse);
+        return ResponseEntity.ok(memberLoginResponse);
     }
 
 }
